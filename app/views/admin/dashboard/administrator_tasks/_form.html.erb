@@ -9,7 +9,7 @@
     </thead>
     <tbody>
       <tr>
-        <%= form_for administrator_task, url: { action: 'update' } do |f| %>
+
           <td>
             <%= link_to administrator_task.source.proposal.title,
                         proposal_path(administrator_task.source.proposal), target: "_blank" %>
@@ -18,10 +18,12 @@
             <%= administrator_task.source.action.title %>
           </td>
           <td class="text-right">
-            <%= f.submit(value: t("admin.dashboard.administrator_tasks.form.solve"),
+            <%= form_for administrator_task, url: { action: 'update' } do |f| %>
+              <%= f.submit(value: t("admin.dashboard.administrator_tasks.form.solve"),
                          class: "button") %>
+            <% end %>             
           </td>
-        <% end %>
+
       </tr>
     </tbody>
   </table>
