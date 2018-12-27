@@ -12,7 +12,7 @@
     </div>
   </div>
 
-  <div id="answers">
+  <div id="answers" class="nested-answers">
     <%= f.fields_for :question_answers do |answer| %>
       <%= render 'question_answer_fields', f: answer %>
     <% end %>
