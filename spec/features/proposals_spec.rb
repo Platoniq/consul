@@ -442,6 +442,9 @@ feature 'Proposals' do
     expect(page.html).not_to include "<script>alert('hey')</script>"
 
     click_link 'Dashboard'
+    within '#side_menu' do
+      click_link 'My proposal'
+    end
     click_link 'Edit proposal'
 
     expect(page).to have_current_path(edit_proposal_path(Proposal.last))
@@ -517,7 +520,10 @@ feature 'Proposals' do
       within("#proposal_#{proposal.id}") do
         click_link 'Dashboard'
       end
-
+      
+      within '#side_menu' do
+        click_link 'My proposal'
+      end
       click_link 'Retire proposal'
 
       expect(page).to have_current_path(retire_form_proposal_path(proposal))
