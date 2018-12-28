@@ -1,5 +1,29 @@
 <% if proposed_actions.any? %>
   <h3 class="title"><%= t("dashboard.recommended_actions.title") %></h3>
 
-  <%= render partial: 'proposed_action', collection: proposed_actions %>
+  <div id="proposed_actions" data-toggler=".hide">
+    <% proposed_actions.first(4).each do |proposed_action| %>
+      <%= render 'proposed_action', proposed_action: proposed_action %>
+    <% end %>
+    <% if proposed_actions.count > 4 %>
+      <div class="margin small">
+        <a id="see_proposed_actions_link" data-toggle="last_proposed_actions proposed_actions">
+          <%= t("dashboard.recommended_actions.see_proposed_actions") %>
+        </a>
+      </div>
+    <% end %>
+  </div>
+
+  <% if proposed_actions.count > 4 %>
+    <div id="last_proposed_actions" class="hide" data-toggler=".hide">
+      <%= render partial: 'proposed_action', collection: proposed_actions %>
+
+      <div class="margin small">
+        <a data-toggle="last_proposed_actions proposed_actions">
+          <%= t("dashboard.recommended_actions.hide_proposed_actions") %>
+        </a>
+      </div>
+    </div>
+  <% end %>
+
 <% end %>
