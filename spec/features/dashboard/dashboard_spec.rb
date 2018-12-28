@@ -50,6 +50,33 @@ feature "Proposal's dashboard" do
     action = create(:dashboard_action, :proposed_action, :active)
 
     visit progress_proposal_dashboard_path(proposal)
+
+    expect(page).to have_content(action.title)
+  end
+
+  scenario 'Dashboard progress do not display from the fourth proposed actions', js: true do
+    create_list(:dashboard_action, 4, :proposed_action, :active)
+    action_5 = create(:dashboard_action, :proposed_action, :active)
+
+    visit progress_proposal_dashboard_path(proposal)
+
+    expect(page).not_to have_content(action_5.title)
+  end
+
+  scenario 'Dashboard progress display from the fourth proposed actions when click see_proposed_actions_link', js: true do
+    create_list(:dashboard_action, 4, :proposed_action, :active)
+    action_5 = create(:dashboard_action, :proposed_action, :active)
+    visit progress_proposal_dashboard_path(proposal)
+
+    find(:css, '#see_proposed_actions_link').click
+
+    expect(page).to have_content(action_5.title)
+  end
+
+  scenario 'Dashboard progress can execute proposed action' do
+    action = create(:dashboard_action, :proposed_action, :active)
+
+    visit progress_proposal_dashboard_path(proposal)
     expect(page).to have_content(action.title)
 
     find(:css, "#dashboard_action_#{action.id}_execute").click

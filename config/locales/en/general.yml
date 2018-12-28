@@ -515,6 +515,8 @@ en:
       resource_locked: Resource locked
     recommended_actions:
       title: Recommended actions
+      see_proposed_actions: Check out recommended actions
+      hide_proposed_actions: Hide recommended actions
     next_goal:
       title: Goal
       see_complete_course: Check out the complete course

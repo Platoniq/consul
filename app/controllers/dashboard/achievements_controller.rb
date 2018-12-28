@@ -26,7 +26,7 @@ class Dashboard::AchievementsController < Dashboard::BaseController
     end
 
     if params[:group_by] == 'month'
-      return executed_proposed_actions.group_by { |v| "#{v.executed_at.to_date.year}-#{v.executed_at.to_date.month}"}
+      return executed_proposed_actions.group_by { |v| "#{v.executed_at.to_date.month}/#{v.executed_at.to_date.year}"}
     end
 
     executed_proposed_actions.group_by { |a| a.executed_at.to_date }
