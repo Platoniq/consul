@@ -1,4 +1,4 @@
-<div class="question-fields">
+<div class="question-fields nested-fields">
   <%= f.hidden_field :author_id, value: f.object.author_id || current_user.id %>
   <%= f.hidden_field :proposal_id, value: f.object.proposal_id || proposal.id %>
   <div class="row expanded">
