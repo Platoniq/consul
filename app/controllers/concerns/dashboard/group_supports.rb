@@ -3,11 +3,11 @@ module Dashboard::GroupSupports
 
   included do
     def grouped_supports(attribute)
-      supports.group_by { |v| grouping_key_for(v[attribute].to_date) }
+      supports.group_by { |v| grouping_key_for(v[attribute].in_time_zone.to_date) }
     end
 
     def grouping_key_for(date)
-      return "#{date.cweek}/#{date.year}" if params[:group_by] == 'week'
+      return calculate_week(date) if params[:group_by] == 'week'
       return "#{date.year}-#{date.month}" if params[:group_by] == 'month'
 
       date
@@ -49,5 +49,19 @@ module Dashboard::GroupSupports
       return 1.month if params[:group_by] == 'month'
       1.day
     end
+
   end
+
+  private
+
+  def calculate_week(date)
+    if date.cweek == 1 && date.end_of_week.year != date.year
+      return "#{date.cweek}/#{date.year + 1}"
+    elsif ((date.cweek == 52 || date.cweek == 53) && date.beginning_of_week.year != date.year)
+      return "#{date.cweek}/#{date.year - 1}"
+    else
+      return "#{date.cweek}/#{date.year}"
+    end
+  end
+
 end
