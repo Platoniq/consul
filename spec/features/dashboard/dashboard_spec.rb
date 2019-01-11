@@ -90,7 +90,7 @@ feature "Proposal's dashboard" do
     end
   end
 
-  scenario 'Dashboard progress display no results text when there are not proposed_actions pending' do
+  scenario 'Dashboard progress display contains no results text when there are not proposed_actions pending' do
     visit progress_proposal_dashboard_path(proposal)
 
     expect(page).to have_content("No recommended actions pending")
@@ -107,7 +107,7 @@ feature "Proposal's dashboard" do
     end
   end
 
-  scenario 'Dashboard progress display no results text when there are not proposed_actions pending' do
+  scenario 'Dashboard progress display contains no results text when there are not proposed_actions pending' do
     visit progress_proposal_dashboard_path(proposal)
 
     expect(page).to have_content("No recommended actions done")
@@ -223,4 +223,83 @@ feature "Proposal's dashboard" do
     expect(page).to have_content('Comments')
     expect(page).to have_link('Access the community')
   end
+
+  scenario 'Dashboard has a link to recommended_actions', js: true do
+    expect(page).to have_link('Recommended actions')
+    click_link 'Recommended actions'
+
+    expect(page).to have_content('Recommended actions')
+    expect(page).to have_content('Recommended actions pending')
+    expect(page).to have_content('Recommended actions done')
+  end
+
+  scenario 'On recommended actions section display from the fourth proposed actions when click see_proposed_actions_link', js: true do
+    create_list(:dashboard_action, 4, :proposed_action, :active)
+    action_5 = create(:dashboard_action, :proposed_action, :active)
+
+    visit recommended_actions_proposal_dashboard_path(proposal.to_param)
+    find(:css, '#see_proposed_actions_link_pending').click
+
+    expect(page).to have_content(action_5.title)
+  end
+
+  scenario 'On recommended actions section do not display from the fourth proposed actions', js: true do
+    create_list(:dashboard_action, 4, :proposed_action, :active)
+    action_5 = create(:dashboard_action, :proposed_action, :active)
+
+    visit recommended_actions_proposal_dashboard_path(proposal.to_param)
+
+    expect(page).not_to have_content(action_5.title)
+  end
+
+  scenario 'On recommended actions section display link for toggle when there are more than four proposed actions', js: true do
+    create_list(:dashboard_action, 4, :proposed_action, :active)
+    action_5 = create(:dashboard_action, :proposed_action, :active)
+
+    visit recommended_actions_proposal_dashboard_path(proposal.to_param)
+
+    expect(page).to have_content("Check out recommended actions")
+  end
+
+  scenario 'On recommended actions section do not display link for toggle when there are less than five proposed actions', js: true do
+    create_list(:dashboard_action, 4, :proposed_action, :active)
+
+    visit recommended_actions_proposal_dashboard_path(proposal.to_param)
+
+    expect(page).not_to have_link("Check out recommended actions")
+  end
+
+  scenario 'On recommended actions section display proposed_action pending on his section' do
+    action = create(:dashboard_action, :proposed_action, :active)
+
+    visit recommended_actions_proposal_dashboard_path(proposal.to_param)
+
+    within "#proposed_actions_pending" do
+      expect(page).to have_content(action.title)
+    end
+  end
+
+  scenario 'On recommended actions section contains no_results_text when there are not proposed_actions pending' do
+    visit recommended_actions_proposal_dashboard_path(proposal.to_param)
+
+    expect(page).to have_content("No recommended actions pending")
+  end
+
+  scenario 'On recommended actions section display proposed_action done on his section' do
+    action = create(:dashboard_action, :proposed_action, :active)
+
+    visit recommended_actions_proposal_dashboard_path(proposal.to_param)
+    find(:css, "#dashboard_action_#{action.id}_execute").click
+
+    within "#proposed_actions_done" do
+      expect(page).to have_content(action.title)
+    end
+  end
+
+  scenario 'On recommended actions section contains no_results_text when there are not proposed_actions pending' do
+    visit progress_proposal_dashboard_path(proposal)
+
+    expect(page).to have_content("No recommended actions done")
+  end
+
 end
