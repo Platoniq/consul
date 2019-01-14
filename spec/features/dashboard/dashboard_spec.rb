@@ -69,7 +69,7 @@ feature "Proposal's dashboard" do
 
     visit progress_proposal_dashboard_path(proposal)
 
-    expect(page).to have_link("Check out recommended actions")
+    expect(page).to have_link("Go to recommended actions")
   end
 
   scenario 'Dashboard progress do not display link to new page for proposed actions when there are less than five proposed actions', js: true do
@@ -229,8 +229,8 @@ feature "Proposal's dashboard" do
     click_link 'Recommended actions'
 
     expect(page).to have_content('Recommended actions')
-    expect(page).to have_content('Recommended actions pending')
-    expect(page).to have_content('Recommended actions done')
+    expect(page).to have_content('Pending')
+    expect(page).to have_content('Done')
   end
 
   scenario 'On recommended actions section display from the fourth proposed actions when click see_proposed_actions_link', js: true do
