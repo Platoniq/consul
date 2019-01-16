@@ -531,8 +531,6 @@
     .poster-footer {
       border-left: 2px solid $border;
       color: $text-medium;
-      margin: 0 auto;
-      padding-left: rem-calc(40);
     }
   }
 }
@@ -599,6 +597,11 @@
 
   .poster-content {
 
+    img {
+      max-width: rem-calc(40);
+      vertical-align: top;
+    }
+
     h2 {
       font-size: rem-calc(28);
       margin: $line-height 0;
@@ -619,6 +622,7 @@
     font-size: rem-calc(19);
     width: 50%;
     margin-top: rem-calc(50);
+    padding-left: rem-calc(40);
   }
 }
 
@@ -683,14 +687,10 @@
   }
 
   .poster-content {
-
-    .quote {
-      .curly-quotes::before,
-      .curly-quotes::after {
-        font-size: rem-calc(200);
-        height: rem-calc(18);
-        line-height: rem-calc(150);
-      }
+    img {
+      vertical-align: top;
+      width: 3cm;
+      height: 3cm;
     }
 
     h2 {
@@ -702,18 +702,15 @@
       font-size: 4.7cm;
       margin-top: $line-height;
       max-width: 80%;
-      line-height: 5cm;
-    }
-
-    img {
-      width: 5cm;
-      height: 5cm;
+      line-height: 5.5cm;
     }
   }
 
   .poster-footer {
-    margin-top: 3cm;
-    max-width: 60%;
-    width: 100%;
+    display: block;
+    margin-left: 15cm;
+    max-width: 55%;
+    margin-top: 2cm;
+    padding-left: 4cm;
   }
 }
