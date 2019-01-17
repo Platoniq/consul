@@ -1,7 +1,7 @@
 set :deploy_to, deploysecret(:deploy_to)
 set :server_name, deploysecret(:server_name)
 set :db_server, deploysecret(:db_server)
-set :branch, :dashboard
+set :branch, ENV['branch'] || :dashboard
 set :repo_url, 'https://github.com/Platoniq/consul.git'
 set :ssh_options, port: deploysecret(:ssh_port)
 set :stage, :production
