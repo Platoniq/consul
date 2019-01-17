@@ -15,10 +15,27 @@
       <h4><%= proposed_action.title %></h4>
 
       <% if proposed_action.proposals.where(id: proposal.id).any? %>
-        <p><%= l(proposed_action.executed_actions.find_by(proposal: proposal).executed_at.to_date) %></p>
+
+        <p class="inline">
+          <%= l(proposed_action.executed_actions.find_by(proposal: proposal).executed_at.to_date) %>
+        </p>
+
+        <%= link_to do %>
+          <small><%= t("dashboard.recommended_actions.show_description") %></small>
+        <% end %>
+
+        <div class="hide">
+          <%= proposed_action.description.html_safe %>
+        </div>
+
       <% else %>
-        <% if proposed_action.short_description.present? %>
-          <p><%= proposed_action.short_description %></p>
+        <% if proposed_action.description.present? %>
+        <%= link_to do %>
+          <small><%= t("dashboard.recommended_actions.show_description") %></small>
+        <% end %>
+          <div class="hide">
+            <%= proposed_action.description.html_safe %>
+          </div>
         <% end %>
 
         <% proposed_action.links.each do |link| %>
