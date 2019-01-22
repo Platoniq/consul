@@ -25,7 +25,6 @@ namespace :dashboards do
 
       if actions_for_today.count != actions_for_yesterday.count
         new_actions = actions_for_today - actions_for_yesterday
-        debugger
         Dashboard::Mailer.new_actions_notification(proposal, new_actions).deliver_later
       end
     end
