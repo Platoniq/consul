@@ -12,7 +12,7 @@ module ProposalsDashboardHelper
   end
 
   def recommended_actions_menu_active?
-    controller_name == 'dashboard' && action_name == 'recommended_actions'
+    controller_name == "dashboard" && action_name == "recommended_actions"
   end
 
   def resources_menu_visible?(proposal, resources)
