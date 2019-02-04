@@ -77,3 +77,9 @@ es:
       hi: "Estimado/a usuario/a"
       thanks: "Gracias de nuevo por tu participación."
       sincerely: "Atentamente"
+    new_actions_notification:
+      subject: "Panel de control de propuestas: Nuevas acciones recomendadas disponibles!"
+      hi: "¡Hola!"
+      introduction: "Hay nuevas acciones recomendadas en tu panel de control de propuestas!"
+      dashboard_button: "Accede a tu panel de control"
+      actions: "Nuevas acciones recomendadas disponibles:"
