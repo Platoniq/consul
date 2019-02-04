@@ -9,6 +9,6 @@ class Dashboard::Mailer < ApplicationMailer
   def new_actions_notification(proposal, new_actions)
     @proposal = proposal
     @new_actions = new_actions
-    mail to: proposal.author.email, subject: proposal.title
+    mail to: proposal.author.email, subject: I18n.t("mailers.new_actions_notification.subject")
   end
 end

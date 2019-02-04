@@ -6,7 +6,6 @@
       <tr>
         <td style="background: #3700fd; padding: 20px; text-align: center;">
           <h1 style="color: #fff;"><%= @proposal.title %></h1>
-          <h2 style="color: #fff;"><%= t("dashboard.mailer.forward.subtitle") %></h2>
         </td>
       </tr>
     </tbody>
@@ -18,44 +17,31 @@
     <%= image_tag "default_mailing.jpg", style: "max-width: 100%;" %>
   <% end %>
 
-  <p><%= t("dashboard.mailer.forward.hi")%></p>
-  <p><%= t("dashboard.mailer.forward.introduction", org: setting['org_name']) %></p>
-  <p><%= t("dashboard.mailer.forward.support") %></p>
+  <p><%= t("mailers.new_actions_notification.hi")%></p>
+  <p><%= t("mailers.new_actions_notification.introduction") %></p>
+  <br>
+  <%= t("mailers.new_actions_notification.actions") %>
+  <ul>
+    <% @new_actions.each do |action| %>
+      <li>New proposal action title</li>
+    <% end %>
+  </ul>
 
   <table style="width: 100%;">
     <tbody>
       <tr>
         <td style="padding-bottom: 12px; padding-top: 24px; text-align: center;">
-          <%= link_to proposal_url(@proposal),
+          <%= link_to proposal_dashboard_path(@proposal),
                       style: "font-family: 'Open Sans',arial,sans-serif; background: #3700fd;
                       border-radius: 6px; color: #fff !important; font-weight: bold;
                       padding: 17px 20px; text-align: center; text-decoration: none;
                       font-size: 20px; min-width: 200px; display: inline-block;",
                       target: "_blank" do %>
-            <%= t("dashboard.mailer.forward.support_button") %>
+            <%= t("mailers.new_actions_notification.dashboard_button") %>
           <% end %>
         </td>
       </tr>
     </tbody>
   </table>
 
-  <p><%= t("dashboard.mailer.forward.share") %></p>
-
-  <table style="width: 100%; margin-top: 24px;">
-    <tbody>
-      <tr>
-        <td style="text-align: center;">
-          <h3><%= t("dashboard.mailer.forward.share_in") %></h3>
-        </td>
-      </tr>
-      <tr>
-        <td style="text-align: center;">
-          <%= link_to proposal_url(@proposal, anchor: "social-share") do %>
-            <%= image_tag("social_buttons_mailer.png", alt: t("dashboard.mailer.forward.share_in"),
-                           style: "max-width: 100%;") %>
-          <% end %>
-        </td>
-      </tr>
-    </tbody>
-  </table>
 </td>

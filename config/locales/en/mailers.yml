@@ -77,3 +77,9 @@ en:
       hi: "Dear user,"
       thanks: "Thank you again for participating."
       sincerely: "Sincererly"
+    new_actions_notification:
+      subject: "Proposal dashboard: New recommended action enabled!"
+      hi: "Hi!"
+      introduction: "There are new recommended actions in your proposal dashboard!"
+      dashboard_button: "Access your dashboard"
+      actions: "New recommended actions available:"
