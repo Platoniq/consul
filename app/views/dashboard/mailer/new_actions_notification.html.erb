@@ -23,7 +23,7 @@
   <%= t("mailers.new_actions_notification.actions") %>
   <ul>
     <% @new_actions.each do |action| %>
-      <li>New proposal action title</li>
+      <li><%= action.title %></li>
     <% end %>
   </ul>
 
