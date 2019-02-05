@@ -1,31 +1,27 @@
 <td style="padding-bottom: 20px;padding-left: 10px;font-size: 14px;font-weight: normal;
            font-family:'Open Sans',arial,sans-serif;line-height: 24px; text-align: justify;">
 
-  <table cellpadding="0" cellspacing="0" border="0" style="margin-top: 20px;width: 100%;">
-    <tbody>
-      <tr>
-        <td style="background: #3700fd; padding: 20px; text-align: center;">
-          <h1 style="color: #fff;"><%= @proposal.title %></h1>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-  <% if @proposal.image.present? %>
-    <%= image_tag @proposal.image.attachment.url(:large), style: "max-width: 100%;" %>
-  <% else %>
-    <%= image_tag "default_mailing.jpg", style: "max-width: 100%;" %>
-  <% end %>
-
-  <p><%= t("mailers.new_actions_notification.hi")%></p>
-  <p><%= t("mailers.new_actions_notification.introduction") %></p>
+  <p><%= t("mailers.new_actions_notification_on_create.hi", name: @proposal.author.name) %></p>
+  <p><%= t("mailers.new_actions_notification_on_create.introduction", title: @proposal.title) %></p>
+  <p><%= t("mailers.new_actions_notification_on_create.text_1") %></p>
+  <p><%= t("mailers.new_actions_notification_on_create.text_2") %></p>
   <br>
-  <%= t("mailers.new_actions_notification.actions") %>
+  <p><%= t("mailers.new_actions_notification_on_create.text_3") %></p>
+  <br>
+  <p><%= t("mailers.new_actions_notification_on_create.text_4") %></p>
   <ul>
-    <% @new_actions.each do |action| %>
-      <li><%= action.title %></li>
-    <% end %>
+    <li><%= t("mailers.new_actions_notification_on_create.list_1") %></li>
+    <li><%= t("mailers.new_actions_notification_on_create.list_2") %></li>
+    <li><%= t("mailers.new_actions_notification_on_create.list_3") %></li>
+    <li>
+      <%= t("mailers.new_actions_notification_on_create.list_4",
+            max_month: Setting["months_to_archive_proposals"],
+            max_votes: Setting["votes_for_proposal_success"]) %>
+    </li>
   </ul>
+  <br>
+  <p><%= t("mailers.new_actions_notification_on_create.text_5") %></p>
+  <p><%= t("mailers.new_actions_notification_on_create.text_6") %></p>
 
   <table style="width: 100%;">
     <tbody>
@@ -37,7 +33,7 @@
                       padding: 17px 20px; text-align: center; text-decoration: none;
                       font-size: 20px; min-width: 200px; display: inline-block;",
                       target: "_blank" do %>
-            <%= t("mailers.new_actions_notification.dashboard_button") %>
+            <%= t("mailers.new_actions_notification_on_create.dashboard_button") %>
           <% end %>
         </td>
       </tr>

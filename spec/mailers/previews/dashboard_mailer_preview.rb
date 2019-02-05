@@ -4,17 +4,9 @@ class DashboardMailerPreview < ActionMailer::Preview
     Dashboard::Mailer.forward(proposal)
   end
 
-  # http://localhost:3000/rails/mailers/dashboard_mailer/new_actions_notification
-  def new_actions_notification
-    proposal = Proposal.first
-    new_actions = Dashboard::Action.limit(1)
-    Dashboard::Mailer.new_actions_notification(proposal, new_actions)
-  end
-
   # http://localhost:3000/rails/mailers/dashboard_mailer/new_actions_notification_on_create
   def new_actions_notification_on_create
     proposal = Proposal.first
-    new_actions = Dashboard::Action.limit(1)
-    Dashboard::Mailer.new_actions_notification_on_create(proposal, new_actions)
+    Dashboard::Mailer.new_actions_notification_on_create(proposal)
   end
 end
