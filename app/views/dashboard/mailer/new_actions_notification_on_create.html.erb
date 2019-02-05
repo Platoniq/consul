@@ -3,11 +3,12 @@
 
   <p><%= t("mailers.new_actions_notification_on_create.hi", name: @proposal.author.name) %></p>
   <p><%= t("mailers.new_actions_notification_on_create.introduction", title: @proposal.title) %></p>
-  <p><%= t("mailers.new_actions_notification_on_create.text_1") %></p>
-  <p><%= t("mailers.new_actions_notification_on_create.text_2") %></p>
-  <br>
+  <p>
+    <%= t("mailers.new_actions_notification_on_create.text_1") %>
+    <br>
+    <%= t("mailers.new_actions_notification_on_create.text_2", link: proposal_dashboard_url(@proposal)).html_safe %>
+  </p>
   <p><%= t("mailers.new_actions_notification_on_create.text_3") %></p>
-  <br>
   <p><%= t("mailers.new_actions_notification_on_create.text_4") %></p>
   <ul>
     <li><%= t("mailers.new_actions_notification_on_create.list_1") %></li>
@@ -20,14 +21,17 @@
     </li>
   </ul>
   <br>
-  <p><%= t("mailers.new_actions_notification_on_create.text_5") %></p>
-  <p><%= t("mailers.new_actions_notification_on_create.text_6") %></p>
+  <p>
+    <%= t("mailers.new_actions_notification_on_create.text_5") %>
+    <br>
+    <%= t("mailers.new_actions_notification_on_create.text_6") %>
+  </p>
 
   <table style="width: 100%;">
     <tbody>
       <tr>
         <td style="padding-bottom: 12px; padding-top: 24px; text-align: center;">
-          <%= link_to proposal_dashboard_url(@proposal),
+          <%= link_to progress_proposal_dashboard_path(@proposal),
                       style: "font-family: 'Open Sans',arial,sans-serif; background: #3700fd;
                       border-radius: 6px; color: #fff !important; font-weight: bold;
                       padding: 17px 20px; text-align: center; text-decoration: none;
