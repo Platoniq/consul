@@ -217,23 +217,41 @@ describe Dashboard::Action do
     end
   end
 
-  context '#detect_new_actions' do
+  context "#detect_new_actions" do
 
-    describe "No detect new actions when there are not news actions actived" do
+    describe "No detect new actions" do
 
       let!(:action)   { create(:dashboard_action, :proposed_action, :active, day_offset: 1) }
       let!(:resource) { create(:dashboard_action, :resource, :active, day_offset: 1) }
 
-      it "for published proposals" do
+      it "when there are not news actions actived for published proposals" do
         proposal = create(:proposal)
+        action.update(published_proposal: true)
+        resource.update(published_proposal: true)
 
         expect(described_class.detect_new_actions(proposal)).to eq []
       end
 
-      it "for draft proposals" do
+      it "when there are news actions actived for draft_proposal but proposal is published" do
+        proposal = create(:proposal)
+        action.update(published_proposal: false, day_offset: 0)
+        resource.update(published_proposal: false, day_offset: 0)
+
+        expect(described_class.detect_new_actions(proposal)).to eq []
+      end
+
+      it "when there are not news actions actived for draft proposals" do
         proposal = create(:proposal, :draft)
         action.update(published_proposal: false)
         resource.update(published_proposal: false)
+
+        expect(described_class.detect_new_actions(proposal)).to eq []
+      end
+
+      it "when there are news actions actived for published_proposal but proposal is draft" do
+        proposal = create(:proposal, :draft)
+        action.update(published_proposal: true, day_offset: 0)
+        resource.update(published_proposal: true, day_offset: 0)
 
         expect(described_class.detect_new_actions(proposal)).to eq []
       end
@@ -245,8 +263,8 @@ describe Dashboard::Action do
       context "for published proposals" do
 
         let!(:proposal) { create(:proposal) }
-        let!(:action)   { create(:dashboard_action, :proposed_action, :active, day_offset: 0) }
-        let!(:resource) { create(:dashboard_action, :resource, :active, day_offset: 0) }
+        let!(:action)   { create(:dashboard_action, :proposed_action, :active, day_offset: 0, published_proposal: true) }
+        let!(:resource) { create(:dashboard_action, :resource, :active, day_offset: 0, published_proposal: true) }
 
         it "when proposal has been created today and day_offset is valid only for today" do
           expect(described_class.detect_new_actions(proposal)).to include(resource)

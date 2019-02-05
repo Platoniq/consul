@@ -42,6 +42,9 @@ class Dashboard::Action < ActiveRecord::Base
   scope :by_draft, lambda { |draft_proposal|
     return where(published_proposal: false) if draft_proposal
   }
+  scope :by_published_proposal, lambda { |published|
+    return where(published_proposal: published)
+  }
 
   def self.active_for(proposal)
     published_at = proposal.published_at&.to_date || Date.today
@@ -111,12 +114,12 @@ class Dashboard::Action < ActiveRecord::Base
     end
 
     def self.calculate_actions(proposal_votes, day_offset, proposal)
-      Dashboard::Action.active.where('required_supports <= ?', proposal_votes)
-                              .where('day_offset <= ?', day_offset)
-                              .by_draft(proposal.draft?)
+      Dashboard::Action.active.where("required_supports <= ?", proposal_votes)
+                              .where("day_offset <= ?", day_offset)
+                              .by_published_proposal(proposal.published?)
     end
 
     def self.calculate_votes(proposal)
-      Vote.where(votable: proposal).where('created_at <= ?', Date.yesterday).count
+      Vote.where(votable: proposal).where("created_at <= ?", Date.yesterday).count
     end
 end
