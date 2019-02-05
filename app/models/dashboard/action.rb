@@ -45,6 +45,9 @@ class Dashboard::Action < ActiveRecord::Base
   scope :by_published_proposal, lambda { |published|
     return where(published_proposal: published)
   }
+  scope :by_published_proposal, lambda { |published|
+    return where(published_proposal: published)
+  }
 
   def self.active_for(proposal)
     published_at = proposal.published_at&.to_date || Date.today
@@ -90,10 +93,7 @@ class Dashboard::Action < ActiveRecord::Base
     actions_for_today = get_actions_for_today(proposal)
     actions_for_yesterday = get_actions_for_yesterday(proposal)
 
-    actions_for_today_ids = actions_for_today.pluck(:id)
-    actions_for_yesterday_ids = actions_for_yesterday.pluck(:id)
-
-    actions_for_today_ids - actions_for_yesterday_ids
+    new_actions = actions_for_today - actions_for_yesterday
   end
 
   private
