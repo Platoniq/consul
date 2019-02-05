@@ -23,6 +23,8 @@ describe "Dashboards Rake" do
 
       it "when there are not news actions actived for published proposals" do
         create(:proposal)
+        action.update(published_proposal: true)
+        resource.update(published_proposal: true)
 
         expect {run_rake_task}.to change { ActionMailer::Base.deliveries.count }.by(0)
       end
@@ -37,8 +39,8 @@ describe "Dashboards Rake" do
 
       it "when there are news actions actived for archived proposals" do
         create(:proposal, :archived)
-        action.update(day_offset: 0)
-        resource.update(day_offset: 0)
+        action.update(day_offset: 0, published_proposal: true)
+        resource.update(day_offset: 0, published_proposal: true)
 
         expect {run_rake_task}.to change { ActionMailer::Base.deliveries.count }.by(0)
       end
@@ -50,17 +52,29 @@ describe "Dashboards Rake" do
       let!(:resource) { create(:dashboard_action, :resource, :active, day_offset: 0) }
 
       it " when there are news actions actived for published proposals" do
-        create(:proposal)
+        proposal = create(:proposal)
+        action.update(published_proposal: true)
+        resource.update(published_proposal: true)
 
-        expect {run_rake_task}.to change { ActionMailer::Base.deliveries.count }.by(1)
+        run_rake_task
+        email = open_last_email
+
+        expect(email).to deliver_from("CONSUL <noreply@consul.dev>")
+        expect(email).to deliver_to(proposal.author)
+        expect(email).to have_subject("More news about your citizen proposal in Decide Madrid")
       end
 
       it "when there are news actions actived for draft proposals" do
-        create(:proposal, :draft)
+        proposal = create(:proposal, :draft)
         action.update(published_proposal: false)
         resource.update(published_proposal: false)
 
-        expect {run_rake_task}.to change { ActionMailer::Base.deliveries.count }.by(1)
+        run_rake_task
+        email = open_last_email
+
+        expect(email).to deliver_from("CONSUL <noreply@consul.dev>")
+        expect(email).to deliver_to(proposal.author)
+        expect(email).to have_subject("More news about your citizen proposal in Decide Madrid")
       end
     end
 
