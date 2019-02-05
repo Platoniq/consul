@@ -11,6 +11,12 @@
     </tbody>
   </table>
 
+  <% if @proposal.image.present? %>
+    <%= image_tag @proposal.image.attachment.url(:large), style: "max-width: 100%;" %>
+  <% else %>
+    <%= image_tag "default_mailing.jpg", style: "max-width: 100%;" %>
+  <% end %>
+
   <p><%= t("mailers.new_actions_notification.hi")%></p>
   <p><%= t("mailers.new_actions_notification.introduction") %></p>
   <br>

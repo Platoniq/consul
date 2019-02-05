@@ -83,3 +83,9 @@ en:
       introduction: "There are new recommended actions in your proposal dashboard!"
       dashboard_button: "Access your dashboard"
       actions: "New recommended actions available:"
+    new_actions_notification_on_create:
+      subject: "Proposal dashboard: New recommended action enabled!"
+      hi: "Hi!"
+      introduction: "There are new recommended actions in your proposal dashboard!"
+      dashboard_button: "Access your dashboard"
+      actions: "New recommended actions available:"

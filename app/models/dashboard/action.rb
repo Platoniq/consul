@@ -82,4 +82,43 @@ class Dashboard::Action < ActiveRecord::Base
   def self.next_goal_for(proposal)
     course_for(proposal).first
   end
+
+  def self.detect_new_actions(proposal)
+    actions_for_today = get_actions_for_today(proposal)
+    actions_for_yesterday = get_actions_for_yesterday(proposal)
+
+    new_actions = actions_for_today - actions_for_yesterday
+  end
+
+  private
+    def self.get_actions_for_today(proposal)
+      proposal_votes = proposal.cached_votes_up
+      day_offset = calculate_day_offset(proposal, Date.today)
+
+      calculate_actions(proposal_votes, day_offset, proposal)
+    end
+
+    def self.get_actions_for_yesterday(proposal)
+      proposal_votes = calculate_votes(proposal)
+      day_offset = calculate_day_offset(proposal, Date.yesterday)
+
+      calculate_actions(proposal_votes, day_offset, proposal)
+    end
+
+    def self.calculate_day_offset(proposal, date)
+      published_at = proposal.published_at&.to_date
+      published_at_or_today = published_at || Date.today
+
+      (date - published_at_or_today).to_i
+    end
+
+    def self.calculate_actions(proposal_votes, day_offset, proposal)
+      Dashboard::Action.active.where('required_supports <= ?', proposal_votes)
+                              .where('day_offset <= ?', day_offset)
+                              .by_draft(proposal.draft?)
+    end
+
+    def self.calculate_votes(proposal)
+      Vote.where(votable: proposal).where('created_at <= ?', Date.yesterday).count
+    end
 end

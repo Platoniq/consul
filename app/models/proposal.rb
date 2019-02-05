@@ -55,6 +55,8 @@ class Proposal < ActiveRecord::Base
 
   before_save :calculate_hot_score, :calculate_confidence_score
 
+  after_create :send_new_actions_notification
+
   scope :for_render,               -> { includes(:tags) }
   scope :sort_by_hot_score,        -> { reorder(hot_score: :desc) }
   scope :sort_by_confidence_score, -> { reorder(confidence_score: :desc) }
@@ -234,6 +236,14 @@ class Proposal < ActiveRecord::Base
 
   def skip_user_verification?
     Setting["feature.user.skip_verification"].present?
+  end
+
+  def send_new_actions_notification
+    new_actions = Dashboard::Action.detect_new_actions(self)
+
+    if new_actions.present?
+      Dashboard::Mailer.new_actions_notification_on_create(self, new_actions).deliver_later
+    end
   end
 
   protected

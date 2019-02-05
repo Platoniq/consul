@@ -992,4 +992,30 @@ describe Proposal do
 
   end
 
+  describe "#send_new_actions_notification" do
+
+    before do
+      ActionMailer::Base.deliveries.clear
+    end
+
+    it "send notification after create when there are new actived actions" do
+      create(:dashboard_action, :proposed_action, :active, day_offset: 0)
+      create(:dashboard_action, :resource, :active, day_offset: 0)
+
+      create(:proposal)
+
+      expect(ActionMailer::Base.deliveries.count).to eq(1)
+    end
+
+    it "Not send notification after create when there are not new actived actions" do
+      create(:dashboard_action, :proposed_action, :active, day_offset: 1)
+      create(:dashboard_action, :resource, :active, day_offset: 1)
+
+      create(:proposal)
+
+      expect(ActionMailer::Base.deliveries.count).to eq(0)
+    end
+
+  end
+
 end

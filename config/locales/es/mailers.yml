@@ -83,3 +83,9 @@ es:
       introduction: "Hay nuevas acciones recomendadas en tu panel de control de propuestas!"
       dashboard_button: "Accede a tu panel de control"
       actions: "Nuevas acciones recomendadas disponibles:"
+    new_actions_notification_on_create:
+      subject: "Panel de control de propuestas: Nuevas acciones recomendadas disponibles!"
+      hi: "¡Hola!"
+      introduction: "Hay nuevas acciones recomendadas en tu panel de control de propuestas!"
+      dashboard_button: "Accede a tu panel de control"
+      actions: "Nuevas acciones recomendadas disponibles:"

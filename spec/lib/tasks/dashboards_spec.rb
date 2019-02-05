@@ -16,91 +16,51 @@ describe "Dashboards Rake" do
       Rake.application.invoke_task "dashboards:send_notifications"
     end
 
-    describe "Not send notifications to proposal author when there are not news actions actived" do
+    describe "Not send notifications to proposal author" do
 
       let!(:action)   { create(:dashboard_action, :proposed_action, :active, day_offset: 1) }
       let!(:resource) { create(:dashboard_action, :resource, :active, day_offset: 1) }
 
-      it "for published proposals" do
+      it "when there are not news actions actived for published proposals" do
         create(:proposal)
 
-        run_rake_task
-
-        expect(ActionMailer::Base.deliveries.count).to eq(0)
+        expect {run_rake_task}.to change { ActionMailer::Base.deliveries.count }.by(0)
       end
 
-      it "for draft proposals" do
+      it "when there are not news actions actived for draft proposals" do
         create(:proposal, :draft)
         action.update(published_proposal: false)
         resource.update(published_proposal: false)
 
-        run_rake_task
+        expect {run_rake_task}.to change { ActionMailer::Base.deliveries.count }.by(0)
+      end
 
-        expect(ActionMailer::Base.deliveries.count).to eq(0)
+      it "when there are news actions actived for archived proposals" do
+        create(:proposal, :archived)
+        action.update(day_offset: 0)
+        resource.update(day_offset: 0)
+
+        expect {run_rake_task}.to change { ActionMailer::Base.deliveries.count }.by(0)
       end
 
     end
 
-    describe "Send notifications to proposal author when there are news actions actived" do
+    describe "Send notifications to proposal author" do
+      let!(:action)   { create(:dashboard_action, :proposed_action, :active, day_offset: 0) }
+      let!(:resource) { create(:dashboard_action, :resource, :active, day_offset: 0) }
 
-      context "for published proposals" do
+      it " when there are news actions actived for published proposals" do
+        create(:proposal)
 
-        let!(:proposal) { create(:proposal) }
-        let!(:action)   { create(:dashboard_action, :proposed_action, :active, day_offset: 0) }
-        let!(:resource) { create(:dashboard_action, :resource, :active, day_offset: 0) }
-
-        it "when proposal has been created today and day_offset is valid only for today" do
-          run_rake_task
-
-          expect(ActionMailer::Base.deliveries.count).to eq(1)
-        end
-
-        it "when proposal has been created some days ago and day_offset is valid only for today" do
-          proposal.update(created_at: Date.today - 5.days, published_at: Date.today - 5.days)
-          action.update(day_offset: 5)
-          resource.update(day_offset: 5)
-
-          run_rake_task
-
-          expect(ActionMailer::Base.deliveries.count).to eq(1)
-        end
-
-        it "when proposal has received a new vote today" do
-          proposal.update(created_at: Date.yesterday, published_at: Date.yesterday)
-          action.update(required_supports: 1)
-          resource.update(required_supports: 1)
-          create(:vote, voter: proposal.author, votable: proposal)
-
-          run_rake_task
-
-          expect(ActionMailer::Base.deliveries.count).to eq(1)
-        end
-
+        expect {run_rake_task}.to change { ActionMailer::Base.deliveries.count }.by(1)
       end
 
-      context "for draft proposals" do
+      it "when there are news actions actived for draft proposals" do
+        create(:proposal, :draft)
+        action.update(published_proposal: false)
+        resource.update(published_proposal: false)
 
-        let!(:proposal) { create(:proposal, :draft) }
-        let!(:action)   { create(:dashboard_action, :proposed_action, :active, day_offset: 0, published_proposal: false) }
-        let!(:resource) { create(:dashboard_action, :resource, :active, day_offset: 0, published_proposal: false) }
-
-        it "when day_offset field is valid for today and invalid for yesterday" do
-          run_rake_task
-
-          expect(ActionMailer::Base.deliveries.count).to eq(1)
-        end
-
-        it "when proposal has received a new vote today" do
-          proposal.update(created_at: Date.yesterday)
-          action.update(required_supports: 1)
-          resource.update(required_supports: 1)
-          create(:vote, voter: proposal.author, votable: proposal)
-
-          run_rake_task
-
-          expect(ActionMailer::Base.deliveries.count).to eq(1)
-        end
-
+        expect {run_rake_task}.to change { ActionMailer::Base.deliveries.count }.by(1)
       end
     end
 
