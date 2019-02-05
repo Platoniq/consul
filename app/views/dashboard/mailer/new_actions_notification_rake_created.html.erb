@@ -35,7 +35,7 @@
     <ul>
       <li><%= first_proposed_action.title %></li>
       <% if first_proposed_action.description.present? %>
-        <p><%= first_proposed_action.description %></p>
+        <p><%= first_proposed_action.description.html_safe %></p>
       <% end %>
     </ul>
     <br>
