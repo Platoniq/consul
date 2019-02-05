@@ -45,6 +45,9 @@ class Dashboard::Action < ActiveRecord::Base
   scope :by_published_proposal, lambda { |published|
     return where(published_proposal: published)
   }
+  scope :by_published_proposal, lambda { |published|
+    return where(published_proposal: published)
+  }
 
   def self.active_for(proposal)
     published_at = proposal.published_at&.to_date || Date.today
