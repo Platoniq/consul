@@ -106,10 +106,8 @@ class Dashboard::Action < ActiveRecord::Base
     end
 
     def self.calculate_day_offset(proposal, date)
-      published_at = proposal.published_at&.to_date
-      published_at_or_today = published_at || Date.today
-
-      (date - published_at_or_today).to_i
+      start_date = proposal.published? ? proposal.published_at : proposal.created_at
+      (date - start_date.to_date).to_i
     end
 
     def self.calculate_actions(proposal_votes, day_offset, proposal)
