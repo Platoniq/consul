@@ -6,12 +6,14 @@
             name: @proposal.author.name,
             title: @proposal.title) %>
   </p>
-  <p><%= t("mailers.new_actions_notification_on_published.text_1") %></p>
-  <p><%= t("mailers.new_actions_notification_on_published.text_2") %></p>
+  <p>
+    <%= t("mailers.new_actions_notification_on_published.text_1") %>
+    <br>
+    <%= t("mailers.new_actions_notification_on_published.text_2") %>
+  </p>
   <p><%= t("mailers.new_actions_notification_on_published.text_3") %></p>
   <p><%= t("mailers.new_actions_notification_on_published.text_4") %></p>
   <p><%= t("mailers.new_actions_notification_on_published.text_5") %></p>
-  <br>
   <p><%= t("mailers.new_actions_notification_on_published.text_6") %></p>
   <ul>
     <li><%= t("mailers.new_actions_notification_on_published.list_1") %></li>
@@ -20,21 +22,21 @@
   <br>
 
   <p><%= t("mailers.new_actions_notification_on_published.text_7") %></p>
-  <p><%= t("mailers.new_actions_notification_on_published.text_8") %></p>
   <% first_resource = @new_actions.resources.first %>
   <% if first_resource.present? %>
+    <p><%= t("mailers.new_actions_notification_on_published.text_8") %></p>
     <ul>
       <li><%= first_resource.title %></li>
     </ul>
   <% end %>
 
-  <p><%= t("mailers.new_actions_notification_on_published.text_9") %></p>
   <% first_proposed_action = @new_actions.proposed_actions.first %>
   <% if first_proposed_action.present? %>
+    <p><%= t("mailers.new_actions_notification_on_published.text_9") %></p>
     <ul>
       <li><%= first_proposed_action.title %></li>
       <% if first_proposed_action.short_description.present? %>
-        <p><%= first_proposed_action.short_description %></p>
+        <p><%= first_proposed_action.short_description.html_safe %></p>
       <% end %>
     </ul>
   <% end %>
@@ -46,7 +48,7 @@
     <tbody>
       <tr>
         <td style="padding-bottom: 12px; padding-top: 24px; text-align: center;">
-          <%= link_to proposal_dashboard_url(@proposal),
+          <%= link_to progress_proposal_dashboard_path(@proposal),
                     style: "font-family: 'Open Sans',arial,sans-serif; background: #3700fd;
                       border-radius: 6px; color: #fff !important; font-weight: bold;
                       padding: 17px 20px; text-align: center; text-decoration: none;
