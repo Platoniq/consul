@@ -143,7 +143,9 @@ describe Dashboard::Mailer do
       expect(email).to have_body_text("As you get more support, you will unlock new and better resources. Do not stop adding support and we will not stop rewarding and helping you!")
       expect(email).to have_body_text("And for you to start at full speed...")
       expect(email).to have_body_text("Here is a great resource at your disposal!")
+      expect(email).to have_body_text(resource.title)
       expect(email).to have_body_text("You will also find this new recommended dissemination action...")
+      expect(email).to have_body_text(action.title)
       expect(email).to have_body_text("You sure have more resources to use!")
       expect(email).to have_body_text("Go ahead, discover them!")
     end

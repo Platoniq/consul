@@ -26,6 +26,7 @@ class Dashboard::Mailer < ApplicationMailer
   def new_actions_notification_on_published(proposal, new_actions_ids)
     @proposal = proposal
     @new_actions = get_new_actions(new_actions_ids)
+
     mail to: proposal.author.email, subject: I18n.t("mailers.new_actions_notification_on_published.subject")
   end
 
