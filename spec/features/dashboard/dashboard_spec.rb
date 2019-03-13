@@ -293,87 +293,74 @@ feature "Proposal's dashboard" do
     expect(page).to have_link('Access the community')
   end
 
-  scenario "Dashboard has a link to recommended_actions", js: true do
-    expect(page).to have_link("Recommended actions")
-    click_link "Recommended actions"
+  describe "detect_new_actions_after_last_login" do
 
-    expect(page).to have_content("Recommended actions")
-    expect(page).to have_content("Pending")
-    expect(page).to have_content("Done")
-  end
-
-  scenario "On recommended actions section display from the fourth proposed actions
-            when click see_proposed_actions_link", js: true do
-    create_list(:dashboard_action, 4, :proposed_action, :active)
-    action_5 = create(:dashboard_action, :proposed_action, :active)
-
-    visit recommended_actions_proposal_dashboard_path(proposal.to_param)
-    find(:css, "#see_proposed_actions_link_pending").click
-
-    expect(page).to have_content(action_5.title)
-  end
-
-  scenario "On recommended actions section do not display from the fourth proposed actions", js: true do
-    create_list(:dashboard_action, 4, :proposed_action, :active)
-    action_5 = create(:dashboard_action, :proposed_action, :active)
-
-    visit recommended_actions_proposal_dashboard_path(proposal.to_param)
-
-    expect(page).not_to have_content(action_5.title)
-  end
-
-  scenario "On recommended actions section display link for toggle when there are
-            more than four proposed actions", js: true do
-    create_list(:dashboard_action, 4, :proposed_action, :active)
-    action_5 = create(:dashboard_action, :proposed_action, :active)
-
-    visit recommended_actions_proposal_dashboard_path(proposal.to_param)
-
-    expect(page).to have_content("Check out recommended actions")
-  end
-
-  scenario "On recommended actions section do not display link for toggle when
-            there are less than five proposed actions", js: true do
-    create_list(:dashboard_action, 4, :proposed_action, :active)
-
-    visit recommended_actions_proposal_dashboard_path(proposal.to_param)
-
-    expect(page).not_to have_link("Check out recommended actions")
-  end
-
-  scenario "On recommended actions section display proposed_action pending on his section" do
-    action = create(:dashboard_action, :proposed_action, :active)
-
-    visit recommended_actions_proposal_dashboard_path(proposal.to_param)
-
-    within "#proposed_actions_pending" do
-      expect(page).to have_content(action.title)
+    before do
+      proposal.author.update(last_sign_in_at: Date.yesterday)
     end
-  end
 
-  scenario "On recommended actions section contains no_results_text when there are
-            not proposed_actions pending" do
-    visit recommended_actions_proposal_dashboard_path(proposal.to_param)
+    scenario "Display tag 'new' on resouce when it is new for author since last login" do
+      resource = create(:dashboard_action, :resource, :active, day_offset: 0, published_proposal: false)
 
-    expect(page).to have_content("No recommended actions pending")
-  end
+      visit progress_proposal_dashboard_path(proposal)
 
-  scenario "On recommended actions section display proposed_action done on his section" do
-    action = create(:dashboard_action, :proposed_action, :active)
-
-    visit recommended_actions_proposal_dashboard_path(proposal.to_param)
-    find(:css, "#dashboard_action_#{action.id}_execute").click
-
-    within "#proposed_actions_done" do
-      expect(page).to have_content(action.title)
+      within "#dashboard_action_#{resource.id}" do
+        expect(page).to have_content('New')
+      end
     end
+
+    scenario "Not display tag 'new' on resouce when there is not new resources since last login" do
+      resource = create(:dashboard_action, :resource, :active, day_offset: 0, published_proposal: false)
+      proposal.author.update(last_sign_in_at: Date.today)
+
+      visit progress_proposal_dashboard_path(proposal)
+
+      within "#dashboard_action_#{resource.id}" do
+        expect(page).not_to have_content('New')
+      end
+    end
+
+    scenario "Display tag 'new' on proposed_action when it is new for author since last login" do
+      proposed_action = create(:dashboard_action, :proposed_action, :active, day_offset: 0, published_proposal: false)
+
+      visit progress_proposal_dashboard_path(proposal)
+
+      within "#dashboard_action_#{proposed_action.id}" do
+        expect(page).to have_content('New')
+      end
+    end
+
+    scenario "Not display tag 'new' on proposed_action when there is not new proposed_action since last login" do
+      proposed_action = create(:dashboard_action, :proposed_action, :active, day_offset: 0, published_proposal: false)
+      proposal.author.update(last_sign_in_at: Date.today)
+
+      visit progress_proposal_dashboard_path(proposal)
+
+      within "#dashboard_action_#{proposed_action.id}" do
+        expect(page).not_to have_content('New')
+      end
+    end
+
+    scenario "Display tag 'new' on sidebar menu when there is a new resouce since last login" do
+      resource = create(:dashboard_action, :resource, :active, day_offset: 0, published_proposal: false)
+
+      visit progress_proposal_dashboard_path(proposal)
+
+      within "#side_menu" do
+        expect(page).to have_content('New')
+      end
+    end
+
+    scenario "Not display tag 'new' on sidebar menu when there is not a new resouce since last login" do
+      resource = create(:dashboard_action, :resource, :active, day_offset: 0, published_proposal: false)
+      proposal.author.update(last_sign_in_at: Date.today)
+
+      visit progress_proposal_dashboard_path(proposal)
+
+      within "#side_menu" do
+        expect(page).not_to have_content('New')
+      end
+    end
+
   end
-
-  scenario "On recommended actions section contains no_results_text when there are
-            not proposed_actions pending" do
-    visit progress_proposal_dashboard_path(proposal)
-
-    expect(page).to have_content("No recommended actions done")
-  end
-
 end
