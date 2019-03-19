@@ -101,6 +101,15 @@
     margin-left: $line-height / 4;
     max-width: 90%;
 
+    h4 {
+      display: inline-block;
+    }
+
+    .label {
+      margin-left: $line-height;
+      float: right;
+    }
+
     h4,
     p {
       margin-bottom: 0;
