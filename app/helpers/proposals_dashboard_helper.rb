@@ -99,6 +99,6 @@ module ProposalsDashboardHelper
 
   def active_resources_count(proposal)
     default_resources_count = 3 #resources: mail, poster, poll
-    Dashboard::Action.active.resources.by_published_proposal(proposal.published?).count + default_resources_count
+    Dashboard::Action.active.resources.by_draft(proposal.draft?).count + default_resources_count
   end
 end
