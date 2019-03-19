@@ -106,8 +106,7 @@
     }
 
     .label {
-      margin-left: $line-height;
-      float: right;
+      margin-left: $line-height / 2;
     }
 
     h4,
@@ -177,6 +176,15 @@
     width: rem-calc(36);
   }
 
+  .label {
+    position: absolute;
+    top: 20px;
+    left: 0;
+  }
+
+  h4 {
+    margin-top: $line-height;
+  }
   .resource-description {
     min-height: $line-height * 4;
   }
