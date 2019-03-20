@@ -1,9 +1,14 @@
 App.Answers =
 
+  initializeAnswers: (answers)->
+    console.log 'initializeAnswers'
+    $(answers).on 'cocoon:after-insert', (e, new_answer) ->
+      index = $(answers).find("[name$='[given_order]']").size()
+      $(new_answer).find("[name$='[given_order]']").val(index)
+
   nestedAnswers: ->
-    $('.nested-answers').on 'cocoon:after-insert', (e, insertedItem) ->
-      nestedAnswersCount = $("input[type='hidden'][name$='[given_order]']").size()
-      $(insertedItem).find("input[type='hidden'][name$='[given_order]']").val(nestedAnswersCount)
+    $('.js-answers').each (index, answers) ->
+      App.Answers.initializeAnswers(answers)
 
   initialize: ->
     App.Answers.nestedAnswers()
