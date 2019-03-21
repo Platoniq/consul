@@ -12,7 +12,7 @@
   <p>
     <%= t("mailers.new_actions_notification_rake_created.text_1",
            link_to_published: link_to(proposal_dashboard_url(@proposal),
-                                      proposal_dashboard_url(@proposal))) %>
+                                      proposal_dashboard_url(@proposal))).html_safe %>
   </p>
   <p><%= t("mailers.new_actions_notification_rake_created.text_2") %></p>
   <br>
