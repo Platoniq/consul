@@ -1,10 +1,9 @@
 App.Answers =
 
   initializeAnswers: (answers)->
-    console.log 'initializeAnswers'
     $(answers).on 'cocoon:after-insert', (e, new_answer) ->
-      index = $(answers).find("[name$='[given_order]']").size()
-      $(new_answer).find("[name$='[given_order]']").val(index)
+      order = $(answers).find("[name$='[given_order]']").size()
+      $(new_answer).find("[name$='[given_order]']").val(order)
 
   nestedAnswers: ->
     $('.js-answers').each (index, answers) ->

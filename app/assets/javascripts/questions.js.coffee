@@ -6,5 +6,3 @@ App.Questions =
 
   initialize: ->
     App.Questions.nestedQuestions()
-
-
