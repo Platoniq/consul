@@ -1,9 +1,11 @@
 <% content_for :action_title, t("dashboard.mailing.index.title") %>
 <div class="row expanded">
-  <div class="small-12 medium-9 large-7 column dashboard-mail-preview">
-    <div class="mail-header">
-      <h1><%= proposal.title %></h1>
-      <h2><%= t("dashboard.mailer.forward.subtitle") %></h2>
+  <div class="small-12 medium-9 dashboard-mail-preview column dashboard-mail-preview">
+    <div class="mail-header text-left">
+      <%= image_tag "quote_before_white.png" %>
+      <h1 class="inline"><%= proposal.title %></h1>
+      <%= image_tag "quote_after_white.png" %>
+      <h2><%= t("dashboard.mailer.forward.subtitle_html") %></h2>
     </div>
 
     <div class="margin-bottom">
@@ -24,7 +26,9 @@
                     proposal_url(@proposal), class: "button large" %>
       </div>
 
-      <%= t("dashboard.mailer.forward.share") %>
+      <p>
+        <%= t("dashboard.mailer.forward.share") %>
+      </p>
 
       <div class="text-center">
         <h3><%= t("dashboard.mailer.forward.share_in") %></h3>

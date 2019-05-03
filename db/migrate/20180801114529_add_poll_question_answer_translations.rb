@@ -1,9 +1,12 @@
-class AddPollQuestionAnswerTranslations < ActiveRecord::Migration
+class AddPollQuestionAnswerTranslations < ActiveRecord::Migration[4.2]
 
   def self.up
     Poll::Question::Answer.create_translation_table!(
-      title:       :string,
-      description: :text
+      {
+        title:       :string,
+        description: :text
+      },
+      { migrate_data: true }
     )
   end
 

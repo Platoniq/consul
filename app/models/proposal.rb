@@ -1,4 +1,4 @@
-class Proposal < ActiveRecord::Base
+class Proposal < ApplicationRecord
   include Rails.application.routes.url_helpers
   include Flaggable
   include Taggable
@@ -20,19 +20,21 @@ class Proposal < ActiveRecord::Base
                accepted_content_types: [ "application/pdf" ]
   include EmbedVideosHelper
   include Relationable
+  include Milestoneable
+  include Randomizable
 
   acts_as_votable
   acts_as_paranoid column: :hidden_at
   include ActsAsParanoidAliases
 
-  RETIRE_OPTIONS = %w(duplicated started unfeasible done other)
+  RETIRE_OPTIONS = %w[duplicated started unfeasible done other]
 
-  belongs_to :author, -> { with_hidden }, class_name: 'User', foreign_key: 'author_id'
+  belongs_to :author, -> { with_hidden }, class_name: "User", foreign_key: "author_id"
   belongs_to :geozone
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :proposal_notifications, dependent: :destroy
-  has_many :dashboard_executed_actions, dependent: :destroy, class_name: 'Dashboard::ExecutedAction'
-  has_many :dashboard_actions, through: :dashboard_executed_actions, class_name: 'Dashboard::Action'
+  has_many :dashboard_executed_actions, dependent: :destroy, class_name: "Dashboard::ExecutedAction"
+  has_many :dashboard_actions, through: :dashboard_executed_actions, class_name: "Dashboard::Action"
   has_many :polls, as: :related
 
   validates :title, presence: true
@@ -55,12 +57,13 @@ class Proposal < ActiveRecord::Base
 
   before_save :calculate_hot_score, :calculate_confidence_score
 
+  after_create :send_new_actions_notification_on_create
+
   scope :for_render,               -> { includes(:tags) }
   scope :sort_by_hot_score,        -> { reorder(hot_score: :desc) }
   scope :sort_by_confidence_score, -> { reorder(confidence_score: :desc) }
   scope :sort_by_created_at,       -> { reorder(created_at: :desc) }
   scope :sort_by_most_commented,   -> { reorder(comments_count: :desc) }
-  scope :sort_by_random,           -> { reorder("RANDOM()") }
   scope :sort_by_relevance,        -> { all }
   scope :sort_by_flags,            -> { order(flags_count: :desc, updated_at: :desc) }
   scope :sort_by_archival_date,    -> { archived.sort_by_confidence_score }
@@ -84,6 +87,7 @@ class Proposal < ActiveRecord::Base
 
   def publish
     update(published_at: Time.now)
+    send_new_actions_notification_on_published
   end
 
   def published?
@@ -112,13 +116,13 @@ class Proposal < ActiveRecord::Base
   end
 
   def searchable_values
-    { title              => 'A',
-      question           => 'B',
-      author.username    => 'B',
-      tag_list.join(' ') => 'B',
-      geozone.try(:name) => 'B',
-      summary            => 'C',
-      description        => 'D'
+    { title              => "A",
+      question           => "B",
+      author.username    => "B",
+      tag_list.join(" ") => "B",
+      geozone.try(:name) => "B",
+      summary            => "C",
+      description        => "D"
     }
   end
 
@@ -180,18 +184,15 @@ class Proposal < ActiveRecord::Base
   end
 
   def code
-    "#{Setting['proposal_code_prefix']}-#{created_at.strftime('%Y-%m')}-#{id}"
+    "#{Setting["proposal_code_prefix"]}-#{created_at.strftime("%Y-%m")}-#{id}"
   end
 
   def after_commented
-    save # updates the hot_score because there is a before_save
+    save # update cache when it has a new comment
   end
 
   def calculate_hot_score
-    self.hot_score = ScoreCalculator.hot_score(created_at,
-                                               total_votes,
-                                               total_votes,
-                                               comments_count)
+    self.hot_score = ScoreCalculator.hot_score(self)
   end
 
   def calculate_confidence_score
@@ -199,15 +200,15 @@ class Proposal < ActiveRecord::Base
   end
 
   def after_hide
-    tags.each{ |t| t.decrement_custom_counter_for('Proposal') }
+    tags.each{ |t| t.decrement_custom_counter_for("Proposal") }
   end
 
   def after_restore
-    tags.each{ |t| t.increment_custom_counter_for('Proposal') }
+    tags.each{ |t| t.increment_custom_counter_for("Proposal") }
   end
 
   def self.votes_needed_for_success
-    Setting['votes_for_proposal_success'].to_i
+    Setting["votes_for_proposal_success"].to_i
   end
 
   def successful?
@@ -227,13 +228,29 @@ class Proposal < ActiveRecord::Base
   end
 
   def self.proposals_orders(user)
-    orders = %w{hot_score confidence_score created_at relevance archival_date}
-    orders << "recommendations" if Setting['feature.user.recommendations_on_proposals'] && user&.recommended_proposals
+    orders = %w[hot_score confidence_score created_at relevance archival_date]
+    orders << "recommendations" if Setting["feature.user.recommendations_on_proposals"] && user&.recommended_proposals
     return orders
   end
 
   def skip_user_verification?
     Setting["feature.user.skip_verification"].present?
+  end
+
+  def send_new_actions_notification_on_create
+    new_actions = Dashboard::Action.detect_new_actions_since(Date.yesterday, self)
+
+    if new_actions.present?
+      Dashboard::Mailer.delay.new_actions_notification_on_create(self)
+    end
+  end
+
+  def send_new_actions_notification_on_published
+    new_actions_ids = Dashboard::Action.detect_new_actions_since(Date.yesterday, self)
+
+    if new_actions_ids.present?
+      Dashboard::Mailer.delay.new_actions_notification_on_published(self, new_actions_ids)
+    end
   end
 
   protected

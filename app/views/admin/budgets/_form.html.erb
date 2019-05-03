@@ -1,12 +1,21 @@
-<%= form_for [:admin, @budget] do |f| %>
+<%= render "admin/shared/globalize_locales", resource: @budget %>
+
+<%= translatable_form_for [:admin, @budget] do |f| %>
+
+  <%= render "shared/errors", resource: @budget %>
 
   <div class="small-12 medium-9 column">
-    <%= f.text_field :name, maxlength: Budget.title_max_length %>
+    <%= f.translatable_fields do |translations_form| %>
+    <%= translations_form.text_field :name,
+        label: t("activerecord.attributes.budget.name"),
+        maxlength: Budget.title_max_length,
+        placeholder: t("activerecord.attributes.budget.name") %>
+    <% end %>
   </div>
 
   <div class="margin-top">
     <div class="small-12 medium-6 column">
-      <%= f.select :phase, budget_phases_select_options, selected: "drafting" %>
+      <%= f.select :phase, budget_phases_select_options %>
     </div>
     <div class="small-12 medium-3 column end">
       <%= f.select :currency_symbol, budget_currency_symbol_select_options %>
@@ -43,7 +52,7 @@
               <% end %>
             </td>
             <td class="text-center">
-              <span class="budget-phase-enabled <%= phase.enabled? ? 'enabled' : 'disabled' %>"></span>
+              <span class="budget-phase-enabled <%= phase.enabled? ? "enabled" : "disabled" %>"></span>
             </td>
             <td>
               <%= link_to t("admin.budgets.edit.edit_phase"),
@@ -62,8 +71,8 @@
     </div>
 
     <div class="float-right">
-      <% if @budget.balloting_process? %>
-        <%= link_to t("admin.budgets.winners.calculate"),
+      <% if display_calculate_winners_button?(@budget) %>
+        <%= link_to calculate_winner_button_text(@budget),
                     calculate_winners_admin_budget_path(@budget),
                     method: :put,
                     class: "button hollow" %>

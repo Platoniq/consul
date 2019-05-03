@@ -67,7 +67,7 @@ en:
       most_commented: Most commented
     select_order: Sort by
     show:
-      return_to_commentable: 'Go back to '
+      return_to_commentable: "Go back to "
   comments_helper:
     comment_button: Publish comment
     comment_link: Comment
@@ -111,12 +111,12 @@ en:
         relevance: relevance
         recommendations: recommendations
       recommendations:
-        without_results: There are not debates related to your interests
+        without_results: There are no debates related to your interests
         without_interests: Follow proposals so we can give you recommendations
         disable: "Debates recommendations will stop showing if you dismiss them. You can enable them again in 'My account' page"
         actions:
           success: "Recommendations for debates are now disabled for this account"
-          error: "An error has occured. Please go to 'Your account' page to manually disable recommendations for debates"
+          error: "An error has occured. Please go to 'My account' page to manually disable recommendations for debates"
       search_form:
         button: Search
         placeholder: Search debates...
@@ -181,6 +181,7 @@ en:
     proposal_notification: "Notification"
     spending_proposal: Spending proposal
     budget/investment: Investment
+    budget/group: Budget Group
     budget/heading: Budget Heading
     poll/shift: Shift
     poll/question/answer: Answer
@@ -206,19 +207,20 @@ en:
         retired: Retired
       proposal_totals:
         active_resources: Active resources
-        community: Community
+        community: Participants in your community
         show_proposal: Show proposal
         preview_proposal: Preview proposal
         current_goal: Current goal
-        support_count:
-          one: "%{count} support"
-          other: "%{count} supports"
+        supports:
+          zero: No supports
+          one: 1 Support
+          other: "Supports"
     footer:
       accessibility: Accessibility
       conditions: Terms and conditions of use
       consul: CONSUL application
       consul_url: https://github.com/consul/consul
-      contact_us: For technical assistance enters
+      contact_us: For technical assistance visit
       copyright: CONSUL, %{year}
       description: This portal uses the %{consul} which is %{open_source}.
       open_source: open-source software
@@ -230,10 +232,9 @@ en:
       administration_menu: Admin
       administration: Administration
       available_locales: Available languages
-      collaborative_legislation: Legislation processes
+      collaborative_legislation: Collaborative legislation
       debates: Debates
-      external_link_blog: Blog
-      locale: 'Language:'
+      locale: "Language:"
       logo: CONSUL logo
       management: Management
       moderation: Moderation
@@ -255,14 +256,7 @@ en:
         notifications: Notifications
         no_notifications: "You don't have new notifications"
     admin:
-      watch_form_message: 'You have unsaved changes. Do you confirm to leave the page?'
-  legacy_legislation:
-    help:
-      alt: Select the text you want to comment and press the button with the pencil.
-      text: To comment this document you must %{sign_in} or %{sign_up}. Then select the text you want to comment and press the button with the pencil.
-      text_sign_in: login
-      text_sign_up: sign up
-      title: How I can comment this document?
+      watch_form_message: "You have unsaved changes. Do you confirm to leave the page?"
   notifications:
     index:
       empty_notifications: You don't have new notifications.
@@ -314,14 +308,15 @@ en:
         submit_button: Create proposal
     created:
       title: Congratulations! You have taken the first step.
-      motivation:  "It is important to have at least 100 supports on the first day of the campaign to be able to boost your proposal."
-      motivation_2_html: "<strong>Do you think you need help to achieve this goal?</strong><br>If so, leave your proposal as a draft and we will guide you."
+      motivation: "It is important to prepare the launch campaign for your proposal to be successful. The first few days are decisive."
+      motivation_2_html: "<strong>If you want recommendations to prepare the publishing leave your proposal as a draft and we will guide you.</strong>"
       publish: No, I want to publish the proposal
       dashboard: Yes, I want help and I'll publish later
       preview_title: This is how your proposal will look when you publish it
     share:
       improve_it: Improve your campaign and get more support.
       dashboard: See more information
+      message: "I supported the proposal %{title} in %{handle}. If you're interested, support it too!"
     edit:
       editing: Edit proposal
       form:
@@ -381,7 +376,7 @@ en:
         disable: "Proposals recommendations will stop showing if you dismiss them. You can enable them again in 'My account' page"
         actions:
           success: "Recommendations for proposals are now disabled for this account"
-          error: "An error has occured. Please go to 'Your account' page to manually disable recommendations for proposals"
+          error: "An error has occured. Please go to 'My account' page to manually disable recommendations for proposals"
       retired_proposals: Retired proposals
       retired_proposals_link: "Proposals retired by the author"
       retired_links:
@@ -399,7 +394,7 @@ en:
         one: " containing the term <strong>'%{search_term}'</strong>"
         other: " containing the term <strong>'%{search_term}'</strong>"
       select_order: Order by
-      select_order_long: 'You are viewing proposals according to:'
+      select_order_long: "You are viewing proposals according to:"
       start_proposal: Create a proposal
       title: Proposals
       top: Top weekly
@@ -429,8 +424,6 @@ en:
         guide: "Now you can share it so people can start supporting."
         edit: "Before it gets shared you'll be able to change the text as you like."
         view_proposal: Not now, go to my proposal
-      improve_info: "Improve your campaign and get more supports"
-      improve_info_link: "See more information"
       already_supported: You have already supported this proposal. Share it!
       comments:
         one: 1 comment
@@ -452,7 +445,7 @@ en:
       successful: "This proposal has reached the required supports."
     show:
       author_deleted: User deleted
-      code: 'Proposal code:'
+      code: "Proposal code:"
       comments:
         one: 1 comment
         other: "%{count} comments"
@@ -462,32 +455,35 @@ en:
       flag: This proposal has been flagged as inappropriate by several users.
       login_to_comment: You must %{signin} or %{signup} to leave a comment.
       notifications_tab: Notifications
+      milestones_tab: Milestones
       retired_warning: "The author considers this proposal should not receive more supports."
       retired_warning_link_to_explanation: Read the explanation before voting for it.
       retired: Proposal retired by the author
       share: Share
-      no_notifications: "This proposal has any notifications."
+      no_notifications: "This proposal has no notifications."
       embed_video_title: "Video on %{proposal}"
       title_external_url: "Additional documentation"
       title_video_url: "External video"
       author: Author
-      draft: Proposal in draft
+      draft: Proposal in draft. Cannot yet get supports, nor does it appear in the list of proposals.
     update:
       form:
         submit_button: Save changes
   dashboard:
     menu:
-      my_proposal: My proposal
+      my_proposal: Edit my proposal
       progress: Progress
       resources: Resources
       community: Community
       polls: Polls
       mailing: E-mail
       poster: Poster
+      recommended_actions: Recommended actions
     form:
       request: Request
     create_request:
-      success: The request for the administrator has been successfully sent.
+      success: The request has been successfully sent. We will contact you as soon as possible to inform you about it.
+      archived: This proposal is archived and can not request resources.
     progress:
       title: Graphic
       group_by_month: Monthly
@@ -496,6 +492,7 @@ en:
       progress: Acumulated progress
       supports: Supports
       success: Ideal progress
+      new_action: New
     index:
       title: Edition
       edit_proposal_link: Edit proposal
@@ -515,6 +512,14 @@ en:
       resource_locked: Resource locked
     recommended_actions:
       title: Recommended actions
+      goto_proposed_actions: Go to recommended actions
+      see_proposed_actions: Check out recommended actions
+      hide_proposed_actions: Hide recommended actions
+      pending_title: Pending
+      show_description: Show description
+      without_pending_actions: No recommended actions pending
+      done_title: Done
+      without_done_actions: No recommended actions done
     next_goal:
       title: Goal
       see_complete_course: Check out the complete course
@@ -526,7 +531,7 @@ en:
       days:
         one: "%{count} day"
         other: "%{count} days"
-      unlocked_resource: Resource unlocked
+      locked_resource: Resource locked
       ideal_time: Ideal time
     community:
       access_community: Access the community
@@ -544,8 +549,12 @@ en:
           other: You have created %{count} polls.
         links: Links
         additiontal_information: Additional information
+      new:
+        title: New poll
+        submit: Create poll
+      edit:
+        submit: Update poll
       poll:
-        copy_link: Copy link
         responses:
           one: "%{count} response"
           other: "%{count} responses"
@@ -565,14 +574,14 @@ en:
         title: Poster preview
         poster_title: "Do not keep looking,"
         poster_subtitle: "back me up! ;)"
-        intro_text:
-          I am participating in Decide Madrid with my own citizen proposal and only if you also add you can I achieve the
-          necessary support to make Madrid the city we all want.
+        intro_text_html:
+          "<strong>I am participating in %{org}</strong> with my own citizen proposal and only if you also add you can I achieve the
+          necessary support to make the city we all want."
         proposal_code: "Code of the proposal: %{code}"
         support: Support my proposal
-        footer: Visit decide.madrid.es and support this proposal. We need to be many. Decide your too. Thank you!
+        footer_html: "<strong>Visit %{link} and support this proposal.</strong> We need to be many. Decide your too. Thank you!"
       new:
-        title: Poster feature
+        title: Poster of your proposal
       options:
         preview: Preview
         download: Download
@@ -580,7 +589,7 @@ en:
       index:
         title: E-mail preview
       new:
-        title: E-mail feature
+        title: E-mail model to share
       mailing_options:
         send: Send to %{address}
         preview: Preview
@@ -588,13 +597,13 @@ en:
         sent: The email has been sent
     mailer:
       forward:
-        subtitle: If you support me, we will achieve it.
+        subtitle_html: "If you support me, <br>we will achieve it."
         support_button: Support this proposal
         share_in: Share in
         hi: "Hello!"
         introduction: I am writing to let you know that I am participating in %{org}, the platform we can decide which city we want. And for that, I created my own citizen proposal and now, I'm going to need your support! But do not worry because It is very simple.
-        support: "You just have to click on the button that you will see below 'Support this proposal' and you can directly inform yourself about before promoting it. Only the proposals that achieve the maximum support will be carried out by our City Council, and I thought that you, I'm sure you help me achieve it!"
-        share: "And if you also do me the great favor of sharing my proposal with your friends, family and contacts, it would be the bomb! Can do it next from the social network that you want or from your email."
+        support: "You just have to click on the button that you will see below 'Support this proposal' and you can inform yourself about before promoting it. Only the proposals that achieve the maximum support will be carried out by the City Council, and I thought that you, I'm sure you help me achieve it!"
+        share: "And if you also do me the great favor of sharing my proposal with your friends, family and contacts, it would be perfect!"
   polls:
     all: "All"
     no_dates: "no date assigned"
@@ -603,11 +612,9 @@ en:
     index:
       filters:
         current: "Open"
-        incoming: "Incoming"
         expired: "Expired"
       title: "Polls"
       participate_button: "Participate in this poll"
-      participate_button_incoming: "More information"
       participate_button_expired: "Poll ended"
       no_geozone_restricted: "All city"
       geozone_restricted: "Districts"
@@ -635,7 +642,6 @@ en:
       signup: Sign up
       cant_answer_verify_html: "You must %{verify_link} in order to answer."
       verify_link: "verify your account"
-      cant_answer_incoming: "This poll has not yet started."
       cant_answer_expired: "This poll has finished."
       cant_answer_wrong_geozone: "This question is not available on your geozone."
       more_info_title: "More information"
@@ -664,7 +670,6 @@ en:
     poll_header:
       back_to_proposal: Back to proposal
   poll_questions:
-    create_question: "Create question"
     show:
       vote_answer: "Vote %{answer}"
       voted: "You have voted %{answer}"
@@ -675,35 +680,34 @@ en:
       title_label: "Title"
       body_label: "Message"
       submit_button: "Send message"
-      info_about_receivers_html: "This message will be send to <strong>%{count} people</strong> and it will be visible in %{proposal_page}.<br> Message are not sent immediately, users will receive periodically an email with all proposal notifications."
+      info_about_receivers_html: "This message will be sent to <strong>%{count} people</strong> and it will be visible in %{proposal_page}.<br> Messages are not sent immediately, users will receive periodically an email with all proposal notifications."
       proposal_page: "the proposal's page"
     show:
       back: "Go back to my activity"
   shared:
-    edit: 'Edit'
-    save: 'Save'
-    delete: 'Delete'
+    edit: "Edit"
+    save: "Save"
+    delete: "Delete"
     "yes": "Yes"
     "no": "No"
     search_results: "Search results"
     advanced_search:
-      author_type: 'By author category'
-      author_type_blank: 'Select a category'
-      date: 'By date'
-      date_placeholder: 'DD/MM/YYYY'
-      date_range_blank: 'Choose a date'
-      date_1: 'Last 24 hours'
-      date_2: 'Last week'
-      date_3: 'Last month'
-      date_4: 'Last year'
-      date_5: 'Customized'
-      from: 'From'
-      general: 'With the text'
-      general_placeholder: 'Write the text'
-      search: 'Filter'
-      title: 'Advanced search'
-      to: 'To'
-    delete: Delete
+      author_type: "By author category"
+      author_type_blank: "Select a category"
+      date: "By date"
+      date_placeholder: "DD/MM/YYYY"
+      date_range_blank: "Choose a date"
+      date_1: "Last 24 hours"
+      date_2: "Last week"
+      date_3: "Last month"
+      date_4: "Last year"
+      date_5: "Customized"
+      from: "From"
+      general: "With the text"
+      general_placeholder: "Write the text"
+      search: "Filter"
+      title: "Advanced search"
+      to: "To"
     author_info:
       author_deleted: User deleted
     back: Go back
@@ -777,7 +781,6 @@ en:
         see_more: See more recommendations
         hide: Hide recommendations
   social:
-    blog: "%{org} Blog"
     facebook: "%{org} Facebook"
     twitter: "%{org} Twitter"
     youtube: "%{org} YouTube"
@@ -786,8 +789,8 @@ en:
     instagram: "%{org} Instagram"
   spending_proposals:
     form:
-      association_name_label: 'If you propose in name of an assocation or collective add the name here'
-      association_name: 'Association name'
+      association_name_label: "If you propose in name of an assocation or collective add the name here"
+      association_name: "Association name"
       description: Description
       external_url: Link to additional documentation
       geozone: Scope of operation
@@ -820,7 +823,7 @@ en:
       start_new: Create spending proposal
     show:
       author_deleted: User deleted
-      code: 'Proposal code:'
+      code: "Proposal code:"
       share: Share
     wrong_price_format: Only integer numbers
     spending_proposal:
@@ -927,8 +930,8 @@ en:
       unfeasible: Unfeasible investment projects can not be supported
       not_voting_allowed: Voting phase is closed
       different_heading_assigned:
-        one: "You can only support investment projects in %{count} district"
-        other: "You can only support investment projects in %{count} districts"
+        one: "You can only support investment projects in %{count} district. You have already supported investments in %{supported_headings}."
+        other: "You can only support investment projects in %{count} districts. You have already supported investments in %{supported_headings}."
   welcome:
     feed:
       most_active:
@@ -960,13 +963,14 @@ en:
       question: Do you already have an account in %{org_name}?
       title: Account verification
     welcome:
-      go_to_index: See proposals and debates
+      go_to_index: Not now, go to index page
+      start_using_consul: Go to index page
       title: Participate
       user_permission_debates: Participate on debates
       user_permission_info: With your account you can...
       user_permission_proposal: Create new proposals
       user_permission_support_proposal: Support proposals*
-      user_permission_verify: To perform all the actions verify your account.
+      user_permission_verify: "To perform the following actions verify your account."
       user_permission_verify_info: "* Only for users on Census."
       user_permission_verify_my_account: Verify my account
       user_permission_votes: Participate on final voting
@@ -983,7 +987,7 @@ en:
     error: "Link not valid. Remember to start with %{url}."
     error_itself: "Link not valid. You cannot relate a content to itself."
     success: "You added a new related content"
-    is_related: "¿Is it related content?"
+    is_related: "Is it related content?"
     score_positive: "Yes"
     score_negative: "No"
     content_title:

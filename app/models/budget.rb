@@ -1,11 +1,28 @@
-class Budget < ActiveRecord::Base
+class Budget < ApplicationRecord
 
   include Measurable
   include Sluggable
 
+  translates :name, touch: true
+  include Globalizable
+
+  class Translation
+    validate :name_uniqueness_by_budget
+
+    def name_uniqueness_by_budget
+      if Budget.joins(:translations)
+               .where(name: name)
+               .where.not("budget_translations.budget_id": budget_id).any?
+        errors.add(:name, I18n.t("errors.messages.taken"))
+      end
+    end
+  end
+
   CURRENCY_SYMBOLS = %w(€ $ £ ¥).freeze
 
-  validates :name, presence: true, uniqueness: true
+  before_validation :assign_model_to_translations
+
+  validates_translation :name, presence: true
   validates :phase, inclusion: { in: Budget::Phase::PHASE_KINDS }
   validates :currency_symbol, presence: true
   validates :slug, presence: true, format: /\A[a-z0-9\-_]+\z/
@@ -15,6 +32,8 @@ class Budget < ActiveRecord::Base
   has_many :groups, dependent: :destroy
   has_many :headings, through: :groups
   has_many :phases, class_name: Budget::Phase
+
+  has_one :poll
 
   before_validation :sanitize_descriptions
 
@@ -105,8 +124,8 @@ class Budget < ActiveRecord::Base
     Budget::Phase::PUBLISHED_PRICES_PHASES.include?(phase)
   end
 
-  def valuating_or_later?
-    valuating? || publishing_prices? || balloting_or_later?
+  def publishing_prices_or_later?
+    publishing_prices? || balloting_or_later?
   end
 
   def balloting_process?
@@ -142,11 +161,11 @@ class Budget < ActiveRecord::Base
 
   def investments_orders
     case phase
-    when 'accepting', 'reviewing'
+    when "accepting", "reviewing"
       %w{random}
-    when 'publishing_prices', 'balloting', 'reviewing_ballots'
+    when "publishing_prices", "balloting", "reviewing_ballots"
       %w{random price}
-    when 'finished'
+    when "finished"
       %w{random}
     else
       %w{random confidence_score}
